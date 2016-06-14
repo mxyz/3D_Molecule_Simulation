@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 
 Project("{30AD3D90-B68C-5564-E582-AA56189BB71C}") = "3D Molecular Simulation", "Assembly-CSharp.csproj", "{85294F4C-2014-E909-95F3-43C1482267EF}"
 EndProject
+Project("{30AD3D90-B68C-5564-E582-AA56189BB71C}") = "3D Molecular Simulation", "Assembly-UnityScript.unityproj", "{75029CE0-4477-427B-D94F-F48483A14ABE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,11 +15,15 @@ Global
 		{85294F4C-2014-E909-95F3-43C1482267EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{85294F4C-2014-E909-95F3-43C1482267EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{85294F4C-2014-E909-95F3-43C1482267EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75029CE0-4477-427B-D94F-F48483A14ABE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75029CE0-4477-427B-D94F-F48483A14ABE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75029CE0-4477-427B-D94F-F48483A14ABE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75029CE0-4477-427B-D94F-F48483A14ABE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-				GlobalSection(MonoDevelopProperties) = preSolution
+																																				GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
