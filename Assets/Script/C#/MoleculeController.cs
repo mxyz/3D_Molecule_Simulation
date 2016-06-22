@@ -10,6 +10,11 @@ public class MoleculeController : MonoBehaviour {
 	private float velocity; //velocity of molecule
 	private int count;
 	private Vector3 movement;
+	private float maxVelocity;
+	private float sqrMaxVelocity;
+	private float tempX;
+	private float tempY;
+	private float tempZ;
 
 	// Additional Functions
 
@@ -21,6 +26,13 @@ public class MoleculeController : MonoBehaviour {
 		else
 			return true;
 	}
+	void randomPosition(){
+		float rndPosx = Random.Range (-13, 13);
+		float rndPosy = Random.Range (-14, 9);
+		float rndPosz = Random.Range (-13, 13);
+		transform.position = new Vector3 (rndPosx, rndPosy, rndPosz);
+	}
+
 
 	char randomDirection() {
 		// Random 0, 1, 2
@@ -61,9 +73,14 @@ public class MoleculeController : MonoBehaviour {
 		}
 		this.count = 0;
 	}
+	void SetMaxVelocity(float maxVelocity){
+		this.maxVelocity = maxVelocity;
+		sqrMaxVelocity = maxVelocity * maxVelocity;
+	}
 
 	void Start() {
 		rb = GetComponent<Rigidbody> ();
+		randomPosition ();
 		velocity = 5.0f;
 
 		speed = new float[3];
@@ -77,15 +94,15 @@ public class MoleculeController : MonoBehaviour {
 		}
 		// Set speed of each direction
 		setSpeed ();
-
-		
+		SetMaxVelocity(10.0f);
 		movement = new Vector3 (speed [0], speed [1], speed [2]);
+		//rb.AddForce (movement);
 	}
 
 
 	void OnCollisionEnter (Collision col)
 	{
-
+		/*
 		//Crash walls
 		if (col.gameObject.tag == "Wall") {
 			if (col.gameObject.name == "Ground" || col.gameObject.name == "Roof") {
@@ -96,43 +113,83 @@ public class MoleculeController : MonoBehaviour {
 				//speed [0] = -speed [0];
 				movement.x = -movement.x;
 			}
-			if (col.gameObject.name == "Front" || col.gameObject.name == "Back") {
+			if ((col.gameObject.name == "Front" || col.gameObject.name == "Back")) {
 				//speed [2] = -speed [2];
-				movement.z = - movement.z;
+				movement.z = -movement.z;
 			}
 		}
-
+		*/
 		//Crash another molecule
 		if (col.gameObject.tag == "Molecule") {
-			Debug.Log("Crash with ball");
+			Debug.Log ("Crash with ball");
 			Vector3 v1 = rb.velocity;
+			Debug.Log ("v1 = " + v1.ToString("F10"));
 			Vector3 r1 = transform.position; // position of this molecule
 			Vector3 r2 = col.rigidbody.position; // position of another molecule
-			Debug.Log ("r1 = "+r1+" |r2 = "+r2); // print position of this ball and another ball
+			Debug.Log ("r1 = " + r1.ToString("F10") + " |r2 = " + r2.ToString("F10")); // print position of this ball and another ball
 			//find unit vector; unit vector(e) = r2-r1/|r2-r1|
 			Vector3 r3 = r2 - r1; // r3 is the value of r2 - r1
-			Debug.Log("r3 = "+r3); // print r3
-			float range_r3 = Mathf.Sqrt(Mathf.Pow(r2.x-r1.x,2)+Mathf.Pow(r2.y-r1.y,2)+Mathf.Pow(r2.z-r1.z,2)); // this is |r2-r1|
+			Debug.Log ("r3 = " + r3.ToString("F10")); // print r3
+			float range_r3 = Mathf.Sqrt (Mathf.Pow (r2.x - r1.x, 2) + Mathf.Pow (r2.y - r1.y, 2) + Mathf.Pow (r2.z - r1.z, 2)); // this is |r2-r1|
 			Vector3 e = r3 / range_r3; // r2-r1/|r2-r1|
-			Debug.Log ("e ="+e); // print unit vector
+			Debug.Log ("e =" + e.ToString("F10")); // print unit vector
 
 			// Equation : v1,0 = (e (dot product) v1) * e
-			float dotProduct = Vector3.Dot(e, v1); // e (dot product) v1 = float
-			Debug.Log("Dot Product = "+dotProduct); // print dot product
+			float dotProduct = Vector3.Dot (e, v1); // e (dot product) v1 = float
+			Debug.Log ("Dot Product = " + dotProduct); // print dot product
 			Vector3 v10 = dotProduct * e; // dot product * e
-			Debug.Log("v1,0 = "+v10); // print v1,0
+			Debug.Log ("v1,0 = " + v10.ToString("F10")); // print v1,0
 			// Equation : v1,2 = v1 - v1,0
 			Vector3 v12 = v1 - v10;
-			Debug.Log("v1,2 = "+v12); // print v1,2
-			Vector3 newV1 = -v10 + v12;
-			Debug.Log("newV1 = " + newV1); // print new V
+			Debug.Log ("v1,2 = " + v12.ToString("F10")); // print v1,2
+			Vector3 newV1 = v12 - v10;
+			Debug.Log ("newV1 = " + newV1.ToString("F10")); // print new V
 			movement = newV1;
 		}
 	
 	}
 
+	void changePosition(){
+		Vector3 pos = transform.position;
+		if (pos.x >= 14.5f) {
+			pos.x = -14.5f;
+		}
+		else if (pos.x <= -14.5f){
+			pos.x = 14.5f;
+		}
+		else if (pos.y >= 10.5f) {
+			pos.y = -16;
+		}
+		else if (pos.y <= -16) {
+			pos.y = 10.5f;
+		}
+		else if (pos.z >= 15) {
+			pos.z = -15;
+		}
+		else if(pos.z <= -15){
+			pos.z = 15;
+		}
+		rb.MovePosition(pos);
+	}
+
+
 	void Update() {
 		// transform.Translate(vector3* Time.deltaTime);
+
+		changePosition();
+		/*
+		rb.AddRelativeForce (movement);
+
+		if(rb.velocity.sqrMagnitude > maxVelocity)
+		{
+			//smoothness of the slowdown is controlled by the 0.99f, 
+			//0.5f is less smooth, 0.9999f is more smooth
+			rb.velocity *= 0.99f;
+		}
+	*/
+		if(rb.velocity.sqrMagnitude > sqrMaxVelocity){ 
+			rb.velocity = rb.velocity.normalized * maxVelocity;
+		} 
 		rb.AddForce (movement);
-	}
+}
 }
