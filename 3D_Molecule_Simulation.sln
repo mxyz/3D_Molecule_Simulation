@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{8838793E-8373-BB8E-7BB4-01372EE163A5}") = "3D_Molecule_Simulation", "Assembly-CSharp.csproj", "{F86A68A8-F86E-E06D-1F1E-4A2F3C2D29E8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F86A68A8-F86E-E06D-1F1E-4A2F3C2D29E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F86A68A8-F86E-E06D-1F1E-4A2F3C2D29E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F86A68A8-F86E-E06D-1F1E-4A2F3C2D29E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F86A68A8-F86E-E06D-1F1E-4A2F3C2D29E8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
