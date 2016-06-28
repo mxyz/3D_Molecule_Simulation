@@ -25,6 +25,7 @@ public class MoleculeController : MonoBehaviour
 	// Another Attributes
 	private int numberOfMolecule;
 	private string objName;
+	private Vector3 tempObjPos; // Use when want to set it stay at -15
 	// Functions
 	bool checkDirections ()
 	{
@@ -95,7 +96,7 @@ public class MoleculeController : MonoBehaviour
 	void Start ()
 	{
 		this.objName = this.gameObject.name;
-		this.numberOfMolecule = 10;
+		this.numberOfMolecule = 40;
 		rb = GetComponent<Rigidbody> ();
 		randomPosition (); // Random position of Molecule
 		velocity = 5.0f;
@@ -114,10 +115,10 @@ public class MoleculeController : MonoBehaviour
 		//end of random direction of vector3
 		// Set speed of each direction
 		setSpeed ();
-		SetMaxVelocity (5.0f);
+		SetMaxVelocity (10.0f);
 		movement = new Vector3 (speed [0], speed [1], speed [2]);
 		rb.velocity = movement;
-		this.maxDistance = 5.0f;
+		this.maxDistance = .0f;
 		this.epsilon = 5.0f;
 		this.sigma = 5.0f;
 	}
@@ -217,42 +218,97 @@ public class MoleculeController : MonoBehaviour
 			if (name == this.objName) {
 				continue;
 			}
-			GameObject temp =  GameObject.Find (name);
+			GameObject temp = GameObject.Find (name);
 			/* 
 			 * Check Distance between this molecule and another molecule
 			 * if distance is lower than maximum distance of molecule, do equation, otherwise, do nothing
 			*/
 			Vector3 temppos = temp.transform.position;
 			Vector3 pos = transform.position;
-
+			setTempPos ();
 			float distance = Mathf.Sqrt (Mathf.Pow (temppos.x - pos.x, 2) + Mathf.Pow (temppos.y - pos.y, 2) + Mathf.Pow (temppos.z - pos.z, 2)); //distance between this molecule and another molecule
-			if (distance<=maxDistance) {
-				Debug.Log ("Name = " + name);
-				Debug.Log ("Temppos = " + temppos.ToString ("F10") + " pos = " + pos.ToString ("F10"));
-				Debug.Log ("Distance = " + distance.ToString("F10"));
+			float distance2 = Mathf.Sqrt (Mathf.Pow (temppos.x - tempObjPos.x, 2) + Mathf.Pow (temppos.y - tempObjPos.y, 2) + Mathf.Pow (temppos.z - tempObjPos.z, 2)); //distance between this molecule and another molecule 
+			if (distance <= maxDistance) {
+				//Debug.Log ("Name = " + name);
+				//Debug.Log ("Temppos = " + temppos.ToString ("F10") + " pos = " + pos.ToString ("F10"));
+				//Debug.Log ("Distance = " + distance.ToString("F10"));
 				Vector3 irij = temppos - pos;
 				float evdw = this.epsilon * (Mathf.Pow ((this.sigma / distance), 12) - Mathf.Pow ((this.sigma / distance), 6)); // Energy VDW
 				float equation = ((12 * this.epsilon) / Mathf.Pow (distance, 2)) * (Mathf.Pow ((this.sigma / distance), 12) - ((1.0f / 2.0f) * Mathf.Pow ((this.sigma / distance), 6)));
-				Debug.Log ("Equation =" + equation);
+				//Debug.Log ("Equation =" + equation);
 				Vector3 force = equation * irij;
-				Debug.Log ("Force = " + force);
-				temp.GetComponent<Rigidbody>().AddForce(force);
+				//Debug.Log ("Force = " + force);
+				temp.GetComponent<Rigidbody> ().AddForce (force);
 				this.rb.AddForce (-force);
-				Debug.Log ("Name = " + name);
+				//Debug.Log ("Name = " + name);
+				if (this.objName == "Copy Molecule (1)") {
+					Debug.Log ("Force = " + force + " From " + name);
+				}
+			} else if (distance2 <= maxDistance) {
+				//Debug.Log ("Name = " + name);
+				//Debug.Log ("Temppos = " + temppos.ToString ("F10") + " pos = " + pos.ToString ("F10"));
+				//Debug.Log ("Distance = " + distance.ToString("F10"));
+				Vector3 irij = temppos - tempObjPos;
+				float evdw = this.epsilon * (Mathf.Pow ((this.sigma / distance2), 12) - Mathf.Pow ((this.sigma / distance2), 6)); // Energy VDW
+				float equation = ((12 * this.epsilon) / Mathf.Pow (distance2, 2)) * (Mathf.Pow ((this.sigma / distance2), 12) - ((1.0f / 2.0f) * Mathf.Pow ((this.sigma / distance2), 6)));
+				//Debug.Log ("Equation =" + equation);
+				Vector3 force = equation * irij;
+				//Debug.Log ("Force = " + force);
+				temp.GetComponent<Rigidbody> ().AddForce (force);
+				this.rb.AddForce (-force);
+				//Debug.Log ("Name = " + name);
+				if (this.objName == "Copy Molecule (1)") {
+					Debug.Log ("Force = " + force + " From " + name);
+				}
 			}
 
 		}
 	}
 
+	void setXPos ()
+	{
+		if (tempObjPos.x == Mathf.Abs (tempObjPos.x)) {
+			tempObjPos.x -= 30;
+		} else {
+			tempObjPos.x += 30;
+		}
+	}
+	void setYPos ()
+	{
+		if (tempObjPos.y == Mathf.Abs (tempObjPos.y)) {
+			tempObjPos.y -= 20;
+		} else {
+			tempObjPos.x += 20;
+		}
+	}
+	void setZPos ()
+	{
+		if (tempObjPos.z == Mathf.Abs (tempObjPos.z)) {
+			tempObjPos.z -= 30;
+		} else {
+			tempObjPos.z += 30;
+		}
+	}
+	void setTempPos ()
+	{
+		this.tempObjPos = transform.position;
+		setXPos ();
+		setYPos ();
+		setZPos ();
+	}
+
 	void Update ()
 	{
-
+		setTempPos ();
 		vdwEquation ();
 		changePosition ();
 		if (rb.velocity.sqrMagnitude > sqrMaxVelocity) {
 			rb.velocity = rb.velocity.normalized * maxVelocity;
 		}
-		//rb.AddForce (movement);
+		//if (this.objName == "Copy Molecule (1)") {
+		//	Debug.Log ("TempObjPos =" + this.tempObjPos.ToString ("F6"));
+		//	Debug.Log ("tranform position = " + this.transform.position.ToString ("F6"));
+		//}
 	}
 }
 
