@@ -17,9 +17,15 @@ public class MoleculeController : MonoBehaviour
 	private float tempY;
 	private float tempZ;
 
-	// Additional Functions
+	// Attributes for Lannard Jones potential
+	private float maxDistance; // Maximun distance
+	private float sigma; // σ
+	private float epsilon; // Ɛ
 
-
+	// Another Attributes
+	private int numberOfMolecule;
+	private string objName;
+	// Functions
 	bool checkDirections ()
 	{
 		// if all dir are 's' or 'null' return -1, otherwise, return 1
@@ -88,6 +94,8 @@ public class MoleculeController : MonoBehaviour
 	/* Initialize molecule */
 	void Start ()
 	{
+		this.objName = this.gameObject.name;
+		this.numberOfMolecule = 3;
 		rb = GetComponent<Rigidbody> ();
 		randomPosition (); // Random position of Molecule
 		velocity = 5.0f;
@@ -109,6 +117,9 @@ public class MoleculeController : MonoBehaviour
 		SetMaxVelocity (5.0f);
 		movement = new Vector3 (speed [0], speed [1], speed [2]);
 		rb.velocity = movement;
+		this.maxDistance = 5.0f;
+		this.epsilon = 5.0f;
+		this.sigma = 5.0f;
 	}
 
 	/* Function for collision */
@@ -156,11 +167,9 @@ public class MoleculeController : MonoBehaviour
 			Vector3 r4 = r1 - r2; // r4 is value of r1 - r2
 			float range_r4 = Mathf.Sqrt (Mathf.Pow (r1.x - r2.x, 2) + Mathf.Pow (r1.y - r2.y, 2) + Mathf.Pow (r1.z - r2.z, 2)); // this is |r1-r2|
 			Vector3 e2 = r4 / range_r4; //e2 = r1-r2/|r1-r2|
-			// Equation : v2,0 = (e (dot product) v1) * e 
-			float dotProduct2 = Vector3.Dot (e, v2); // e (dot product) v1 = floata
+			// Equation : v2,0 = (e (dot product) v2) * e 
+			float dotProduct2 = Vector3.Dot (e, v2); // e (dot product) v2 = float
 			Vector3 v20 = dotProduct2 * e2; // dot product * e
-											// Equation : v1,2 = v1 - v1,00
-			Vector3 v22 = v2 - v20; 
 			/* End of other molecule (col) */
 			Vector3 newV1 = v12 + v20;
 			rb.velocity = newV1;
@@ -172,9 +181,9 @@ public class MoleculeController : MonoBehaviour
 			//Debug.Log ("e =" + e.ToString("F10")); // print unit vectorr
 			//Debug.Log ("Dot Product = " + dotProduct); // print dot productt
 			//Debug.Log ("v1,0 = " + v10.ToString("F10")); // print v1,00
-			Debug.Log ("v1,2 = " + v12.ToString("F10")); // print v1,22
-			Debug.Log ("v2,0 = " + v20.ToString ("F10")); // print v2,0
-			Debug.Log ("newV1 = " + newV1.ToString("F10")); // print new V
+			//Debug.Log ("v1,2 = " + v12.ToString("F10")); // print v1,22
+			//Debug.Log ("v2,0 = " + v20.ToString ("F10")); // print v2,0
+			//Debug.Log ("newV1 = " + newV1.ToString("F10")); // print new V
 		}
 
 	}
@@ -198,9 +207,44 @@ public class MoleculeController : MonoBehaviour
 		rb.MovePosition (pos);
 	}
 
+	void vdwEquation ()
+	{
+		for (int i = 1; i <= this.numberOfMolecule; i++) {
+			string name = "Copy Molecule (" + i + ")";
+			if (name == this.objName) {
+				continue;
+			}
+			GameObject temp =  GameObject.Find (name);
+			/* 
+			 * Check Distance between this molecule and another molecule
+			 * if distance is lower than maximum distance of molecule, do equation, otherwise, do nothing
+			*/
+			Vector3 temppos = temp.transform.position;
+			Vector3 pos = transform.position;
+
+			float distance = Mathf.Sqrt (Mathf.Pow (temppos.x - pos.x, 2) + Mathf.Pow (temppos.y - pos.y, 2) + Mathf.Pow (temppos.z - pos.z, 2)); //distance between this molecule and another molecule
+			if (distance<=maxDistance) {
+				Debug.Log ("Name = " + name);
+				Debug.Log ("Temppos = " + temppos.ToString ("F10") + " pos = " + pos.ToString ("F10"));
+				Debug.Log ("Distance = " + distance.ToString("F10"));
+				Vector3 irij = temppos - pos;
+				float evdw = this.epsilon * (Mathf.Pow ((this.sigma / distance), 12) - Mathf.Pow ((this.sigma / distance), 6)); // Energy VDW
+				float equation = ((12 * this.epsilon) / Mathf.Pow (distance, 2)) * (Mathf.Pow ((this.sigma / distance), 12) - ((1.0f / 2.0f) * Mathf.Pow ((this.sigma / distance), 6)));
+				Debug.Log ("Equation =" + equation);
+				Vector3 force = equation * irij;
+				Debug.Log ("Force = " + force);
+				//temp.GetComponent<Rigidbody>().AddForce(force);
+				this.rb.AddForce (-force);
+				Debug.Log ("Name = " + name);
+			}
+
+		}
+	}
 
 	void Update ()
 	{
+
+		vdwEquation ();
 		changePosition ();
 		if (rb.velocity.sqrMagnitude > sqrMaxVelocity) {
 			rb.velocity = rb.velocity.normalized * maxVelocity;
