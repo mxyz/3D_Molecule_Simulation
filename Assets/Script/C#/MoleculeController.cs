@@ -95,7 +95,7 @@ public class MoleculeController : MonoBehaviour
 	void Start ()
 	{
 		this.objName = this.gameObject.name;
-		this.numberOfMolecule = 3;
+		this.numberOfMolecule = 10;
 		rb = GetComponent<Rigidbody> ();
 		randomPosition (); // Random position of Molecule
 		velocity = 5.0f;
@@ -142,49 +142,52 @@ public class MoleculeController : MonoBehaviour
 			}
 		}
 		*/
+
+
 		//Crash another molecule
-		if (col.gameObject.tag == "Molecule") {
-			Debug.Log ("Crash with ball");
-			/* prepare value for equation */
-			Vector3 v1 = rb.velocity;
-			Vector3 v2 = col.rigidbody.velocity;
-			Vector3 r1 = transform.position; // position of this molecule
-			Vector3 r2 = col.rigidbody.position; // position of another molecule
-			/* Equation of this molecule */
-			//find unit vector; unit vector(e) = r2-r1/|r2-r1|
-			Vector3 r3 = r2 - r1; // r3 is the value of r2 - r1
-			float range_r3 = Mathf.Sqrt (Mathf.Pow (r2.x - r1.x, 2) + Mathf.Pow (r2.y - r1.y, 2) + Mathf.Pow (r2.z - r1.z, 2)); // this is |r2-r1|
-			Vector3 e = r3 / range_r3; // r2-r1/|r2-r1|
-			// Equation : v1,0 = (e (dot product) v1) * e
-			float dotProduct = Vector3.Dot (e, v1); // e (dot product) v1 = float
-			Vector3 v10 = dotProduct * e; // dot product * e
-			// Equation : v1,2 = v1 - v1,00
-			Vector3 v12 = v1 - v10;
-			/* End of this molecule */
+		//if (col.gameObject.tag == "Molecule") {
+		//	Debug.Log ("Crash with ball");
+		//	/* prepare value for equation */
+		//	Vector3 v1 = rb.velocity;
+		//	Vector3 v2 = col.rigidbody.velocity;
+		//	Vector3 r1 = transform.position; // position of this molecule
+		//	Vector3 r2 = col.rigidbody.position; // position of another molecule
+		//	/* Equation of this molecule */
+		//	//find unit vector; unit vector(e) = r2-r1/|r2-r1|
+		//	Vector3 r3 = r2 - r1; // r3 is the value of r2 - r1
+		//	float range_r3 = Mathf.Sqrt (Mathf.Pow (r2.x - r1.x, 2) + Mathf.Pow (r2.y - r1.y, 2) + Mathf.Pow (r2.z - r1.z, 2)); // this is |r2-r1|
+		//	Vector3 e = r3 / range_r3; // r2-r1/|r2-r1|
+		//	// Equation : v1,0 = (e (dot product) v1) * e
+		//	float dotProduct = Vector3.Dot (e, v1); // e (dot product) v1 = float
+		//	Vector3 v10 = dotProduct * e; // dot product * e
+		//	// Equation : v1,2 = v1 - v1,00
+		//	Vector3 v12 = v1 - v10;
+		//	/* End of this molecule */
 
-			/* Equation of other molecule (col) */
-			//find unit vector of col molecule
-			Vector3 r4 = r1 - r2; // r4 is value of r1 - r2
-			float range_r4 = Mathf.Sqrt (Mathf.Pow (r1.x - r2.x, 2) + Mathf.Pow (r1.y - r2.y, 2) + Mathf.Pow (r1.z - r2.z, 2)); // this is |r1-r2|
-			Vector3 e2 = r4 / range_r4; //e2 = r1-r2/|r1-r2|
-			// Equation : v2,0 = (e (dot product) v2) * e 
-			float dotProduct2 = Vector3.Dot (e, v2); // e (dot product) v2 = float
-			Vector3 v20 = dotProduct2 * e2; // dot product * e
-			/* End of other molecule (col) */
-			Vector3 newV1 = v12 + v20;
-			rb.velocity = newV1;
+		//	/* Equation of other molecule (col) */
+		//	//find unit vector of col molecule
+		//	Vector3 r4 = r1 - r2; // r4 is value of r1 - r2
+		//	float range_r4 = Mathf.Sqrt (Mathf.Pow (r1.x - r2.x, 2) + Mathf.Pow (r1.y - r2.y, 2) + Mathf.Pow (r1.z - r2.z, 2)); // this is |r1-r2|
+		//	Vector3 e2 = r4 / range_r4; //e2 = r1-r2/|r1-r2|
+		//	// Equation : v2,0 = (e (dot product) v2) * e 
+		//	float dotProduct2 = Vector3.Dot (e, v2); // e (dot product) v2 = float
+		//	Vector3 v20 = dotProduct2 * e2; // dot product * e
+		//	/* End of other molecule (col) */
+		//	Vector3 newV1 = v12 + v20;
+		//	rb.velocity = newV1;
 
-			/* Debug Equation */
-			//Debug.Log ("v1 = " + v1.ToString("F10"))
-			//Debug.Log ("r1 = " + r1.ToString("F10") + " |r2 = " + r2.ToString("F10")); // print position of this ball and another ball;
-			//Debug.Log ("r3 = " + r3.ToString("F10")); // print r33
-			//Debug.Log ("e =" + e.ToString("F10")); // print unit vectorr
-			//Debug.Log ("Dot Product = " + dotProduct); // print dot productt
-			//Debug.Log ("v1,0 = " + v10.ToString("F10")); // print v1,00
-			//Debug.Log ("v1,2 = " + v12.ToString("F10")); // print v1,22
-			//Debug.Log ("v2,0 = " + v20.ToString ("F10")); // print v2,0
-			//Debug.Log ("newV1 = " + newV1.ToString("F10")); // print new V
-		}
+		//	/* Debug Equation */
+		//	//Debug.Log ("v1 = " + v1.ToString("F10"))
+		//	//Debug.Log ("r1 = " + r1.ToString("F10") + " |r2 = " + r2.ToString("F10")); // print position of this ball and another ball;
+		//	//Debug.Log ("r3 = " + r3.ToString("F10")); // print r33
+		//	//Debug.Log ("e =" + e.ToString("F10")); // print unit vectorr
+		//	//Debug.Log ("Dot Product = " + dotProduct); // print dot productt
+		//	//Debug.Log ("v1,0 = " + v10.ToString("F10")); // print v1,00
+		//	//Debug.Log ("v1,2 = " + v12.ToString("F10")); // print v1,22
+		//	//Debug.Log ("v2,0 = " + v20.ToString ("F10")); // print v2,0
+		//	//Debug.Log ("newV1 = " + newV1.ToString("F10")); // print new V
+		//}
+
 
 	}
 	/* This is function to re-position of molecule */
@@ -233,7 +236,7 @@ public class MoleculeController : MonoBehaviour
 				Debug.Log ("Equation =" + equation);
 				Vector3 force = equation * irij;
 				Debug.Log ("Force = " + force);
-				//temp.GetComponent<Rigidbody>().AddForce(force);
+				temp.GetComponent<Rigidbody>().AddForce(force);
 				this.rb.AddForce (-force);
 				Debug.Log ("Name = " + name);
 			}
