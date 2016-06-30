@@ -19,13 +19,14 @@ public class MoleculeController : MonoBehaviour
 
 	// Attributes for Lannard Jones potential
 	private float maxDistance; // Maximun distance
-	private float sigma; // σ
-	private float epsilon; // Ɛ
+	private float sigma; // σ is the main force for Attractive and Rupulsive force should greater than Maximum Distance
+	private float epsilon; // Ɛ 
 
 	// Another Attributes
 	private int numberOfMolecule;
 	private string objName;
 	private Vector3 tempObjPos; // Use when want to set it stay at -15
+	private Vector3 objForce;
 	// Functions
 	bool checkDirections ()
 	{
@@ -92,36 +93,6 @@ public class MoleculeController : MonoBehaviour
 		sqrMaxVelocity = maxVelocity * maxVelocity;
 	}
 
-	/* Initialize molecule */
-	void Start ()
-	{
-		this.objName = this.gameObject.name;
-		this.numberOfMolecule = 40;
-		rb = GetComponent<Rigidbody> ();
-		randomPosition (); // Random position of Molecule
-		velocity = 5.0f;
-
-		speed = new float [3];
-		dir = new char [3];
-
-		//random direction of vector3
-		bool check = false;
-		while (check == false) {
-			this.count = 0;
-			setDirection ();
-			check = checkDirections ();
-		}
-
-		//end of random direction of vector3
-		// Set speed of each direction
-		setSpeed ();
-		SetMaxVelocity (10.0f);
-		movement = new Vector3 (speed [0], speed [1], speed [2]);
-		rb.velocity = movement;
-		this.maxDistance = .0f;
-		this.epsilon = 5.0f;
-		this.sigma = 5.0f;
-	}
 
 	/* Function for collision */
 	void OnCollisionEnter (Collision col)
@@ -234,35 +205,47 @@ public class MoleculeController : MonoBehaviour
 				//Debug.Log ("Distance = " + distance.ToString("F10"));
 				Vector3 irij = temppos - pos;
 				float evdw = this.epsilon * (Mathf.Pow ((this.sigma / distance), 12) - Mathf.Pow ((this.sigma / distance), 6)); // Energy VDW
+				//Debug.Log ("Energy VDW = " + evdw.ToString ("F10"));
 				float equation = ((12 * this.epsilon) / Mathf.Pow (distance, 2)) * (Mathf.Pow ((this.sigma / distance), 12) - ((1.0f / 2.0f) * Mathf.Pow ((this.sigma / distance), 6)));
 				//Debug.Log ("Equation =" + equation);
 				Vector3 force = equation * irij;
 				//Debug.Log ("Force = " + force);
 				temp.GetComponent<Rigidbody> ().AddForce (force);
+				temp.GetComponent<MoleculeController> ().AddObjForce (force);
 				this.rb.AddForce (-force);
+				this.AddObjForce (-force);
 				//Debug.Log ("Name = " + name);
-				if (this.objName == "Copy Molecule (1)") {
-					Debug.Log ("Force = " + force + " From " + name);
-				}
+				//if (this.objName == "Copy Molecule (1)") {
+				//	Debug.Log ("Force = " + force + " From " + name);
+				//	Debug.Log ("Total Force = " + this.objForce);
+				//}
 			} else if (distance2 <= maxDistance) {
 				//Debug.Log ("Name = " + name);
 				//Debug.Log ("Temppos = " + temppos.ToString ("F10") + " pos = " + pos.ToString ("F10"));
-				//Debug.Log ("Distance = " + distance.ToString("F10"));
+				//Debug.Log ("Distance = " + distance2.ToString("F10"));
 				Vector3 irij = temppos - tempObjPos;
 				float evdw = this.epsilon * (Mathf.Pow ((this.sigma / distance2), 12) - Mathf.Pow ((this.sigma / distance2), 6)); // Energy VDW
+				//Debug.Log ("Energy VDW = " + evdw.ToString ("F10"));
 				float equation = ((12 * this.epsilon) / Mathf.Pow (distance2, 2)) * (Mathf.Pow ((this.sigma / distance2), 12) - ((1.0f / 2.0f) * Mathf.Pow ((this.sigma / distance2), 6)));
 				//Debug.Log ("Equation =" + equation);
 				Vector3 force = equation * irij;
 				//Debug.Log ("Force = " + force);
 				temp.GetComponent<Rigidbody> ().AddForce (force);
+				temp.GetComponent<MoleculeController>().AddObjForce (force);
 				this.rb.AddForce (-force);
+				this.AddObjForce (-force);
 				//Debug.Log ("Name = " + name);
-				if (this.objName == "Copy Molecule (1)") {
-					Debug.Log ("Force = " + force + " From " + name);
-				}
+				//if (this.objName == "Copy Molecule (1)") {
+				//	Debug.Log ("Force = " + force + " From " + name);
+				//	Debug.Log ("Total Force = " + this.objForce);
+				//}
 			}
 
 		}
+	}
+	void AddObjForce (Vector3 force)
+	{
+		this.objForce += force;
 	}
 
 	void setXPos ()
@@ -297,7 +280,40 @@ public class MoleculeController : MonoBehaviour
 		setZPos ();
 	}
 
-	void Update ()
+
+	/* Initialize molecule */
+	void Start ()
+	{
+		this.objName = this.gameObject.name;
+		this.numberOfMolecule = 40;
+		rb = GetComponent<Rigidbody> ();
+		randomPosition (); // Random position of Molecule
+		velocity = 1.0f;
+
+		speed = new float [3];
+		dir = new char [3];
+
+		//random direction of vector3
+		bool check = false;
+		while (check == false) {
+			this.count = 0;
+			setDirection ();
+			check = checkDirections ();
+		}
+
+		//end of random direction of vector3
+		// Set speed of each direction
+		setSpeed ();
+		SetMaxVelocity (Mathf.Pow (velocity, 2) + 10);
+		movement = new Vector3 (speed [0], speed [1], speed [2]);
+		rb.velocity = movement;
+		this.maxDistance = 3.0f;
+		this.epsilon = 5.0f;
+		this.sigma = 3.0f;
+		this.objForce = new Vector3 ();
+	}
+
+	void FixedUpdate ()
 	{
 		setTempPos ();
 		vdwEquation ();
