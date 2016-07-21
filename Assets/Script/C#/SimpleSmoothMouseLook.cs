@@ -27,6 +27,9 @@ public class SimpleSmoothMouseLook : MonoBehaviour
 	public float flySpeed = 0.5f;
 	public GameObject defaultCamera;
 
+	private Vector3 firstPosition;
+	private Quaternion firstRotation;
+
 
 	void Start ()
 	{
@@ -38,8 +41,10 @@ public class SimpleSmoothMouseLook : MonoBehaviour
 		if (characterBody)
 			targetCharacterDirection = characterBody.transform.localRotation.eulerAngles;
 
-
+		this.firstPosition = transform.position;
+		this.firstRotation = transform.rotation;
 	}
+
 
 	void FixedUpdate ()
 	{
@@ -48,8 +53,8 @@ public class SimpleSmoothMouseLook : MonoBehaviour
 		if (Input.GetKeyUp (KeyCode.LeftShift) & _shifted)
 			_shifted = false;
 
-		if ((Input.GetKeyDown (KeyCode.LeftShift) & !_shifted) |
-			(Input.GetKeyDown (KeyCode.Escape) & _mouselookEnabled)) {
+		if (((Input.GetKeyDown (KeyCode.LeftShift)| Input.GetMouseButton(0) | Input.GetMouseButton(1)) & !_shifted) |
+		    (Input.GetKeyDown (KeyCode.Escape) & _mouselookEnabled)) {
 			_shifted = true;
 
 			if (!_mouselookEnabled) {
@@ -118,11 +123,13 @@ public class SimpleSmoothMouseLook : MonoBehaviour
 		}
 		// Mouse left click - Forward
 		if (Input.GetMouseButton (0)) {
-			transform.Translate (defaultCamera.transform.forward * flySpeed * _moveSpeed, Space.World);
+			transform.Translate (defaultCamera.transform.right * flySpeed * -_moveSpeed, Space.World);
+			//transform.Translate (defaultCamera.transform.forward * flySpeed * _moveSpeed, Space.World);
 		}
 		// Mouse right click - Backward
 		if (Input.GetMouseButton (1)) {
-			transform.Translate (defaultCamera.transform.forward * flySpeed * -_moveSpeed, Space.World);
+			transform.Translate (defaultCamera.transform.right * flySpeed * _moveSpeed, Space.World);
+			//transform.Translate (defaultCamera.transform.forward * flySpeed * -_moveSpeed, Space.World);
 		}
 
 		// Right and Left Arrow or A and D
@@ -133,6 +140,17 @@ public class SimpleSmoothMouseLook : MonoBehaviour
 			transform.Translate (Vector3.up * flySpeed * 0.5f, Space.World);
 		} else if (Input.GetKey (KeyCode.E)) {
 			transform.Translate (-Vector3.up * flySpeed * 0.5f, Space.World);
+		}
+
+		if (Input.GetAxis("Mouse ScrollWheel")>0f) {
+			transform.Translate (defaultCamera.transform.forward * flySpeed * (_moveSpeed*5), Space.World);
+		}
+		if (Input.GetAxis ("Mouse ScrollWheel") < 0f) {
+			transform.Translate (defaultCamera.transform.forward * flySpeed * (-_moveSpeed*5), Space.World);
+		}
+		if (Input.GetKey (KeyCode.I)) {
+			transform.position = firstPosition;
+			transform.rotation = firstRotation;
 		}
 	}
 }
