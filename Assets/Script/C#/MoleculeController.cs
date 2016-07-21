@@ -20,6 +20,7 @@ public class MoleculeController : MonoBehaviour
 	public string moleculeName;
 	public float moleculeMass;
 	public float moleculeSpeed;
+	public static bool clickOn;
 
 	// Attributes for Lannard Jones potential
 	private float maxDistance; // Maximun distance

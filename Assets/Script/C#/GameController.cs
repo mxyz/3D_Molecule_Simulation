@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 public class GameController : MonoBehaviour {
 
 	private List<GameObject> allMolecule;
 	public static float globalTemperature;
-
+	public Text countText, objNameText, speedText, vectorText, positionText;
 	// Use this for initialization
 	void Start () {
 		allMolecule = new List<GameObject> ();
 		InitList ();
+		countText.text = "Count : " + allMolecule.Count;
 	}
 
 	void InitList ()
@@ -40,6 +42,6 @@ public class GameController : MonoBehaviour {
 	void FixedUpdate () {
 		TemperatureCalculate ();
 		Debug.Log ("Tempurature =" + globalTemperature);
-
+		countText.text = "Count : " + allMolecule.Count;
 	}
 }
