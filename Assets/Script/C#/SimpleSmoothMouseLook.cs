@@ -53,7 +53,7 @@ public class SimpleSmoothMouseLook : MonoBehaviour
 		if (Input.GetKeyUp (KeyCode.LeftShift) & _shifted)
 			_shifted = false;
 
-		if (((Input.GetKeyDown (KeyCode.LeftShift)| Input.GetMouseButton(0) | Input.GetMouseButton(1)) & !_shifted) |
+		if (((Input.GetKeyDown (KeyCode.LeftShift)) & !_shifted) |
 		    (Input.GetKeyDown (KeyCode.Escape) & _mouselookEnabled)) {
 			_shifted = true;
 

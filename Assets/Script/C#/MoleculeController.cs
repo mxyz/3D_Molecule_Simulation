@@ -20,7 +20,7 @@ public class MoleculeController : MonoBehaviour
 	public string moleculeName;
 	public float moleculeMass;
 	public float moleculeSpeed;
-	public static bool clickOn;
+	public bool clickOn;
 
 	// Attributes for Lannard Jones potential
 	private float maxDistance; // Maximun distance
@@ -29,7 +29,7 @@ public class MoleculeController : MonoBehaviour
 
 	// Another Attributes
 	private int numberOfMolecule;
-	private string objName;
+	public string objName;
 	private Vector3 tempObjPos; // Use when want to set it stay at -15
 	private Vector3 objForce;
 	private Vector3[] forceFromObj;
@@ -245,6 +245,10 @@ public class MoleculeController : MonoBehaviour
 	//	}
 
 	//}
+	void OnMouseDown ()
+	{
+		clickOn = true;
+	}
 	int trueCount ()
 	{
 		int count = 0;
@@ -360,12 +364,12 @@ public class MoleculeController : MonoBehaviour
 					number = i;
 				}
 			}
-			Debug.Log ("Final From " + number +" = " + peak);
+			//Debug.Log ("Final From " + number +" = " + peak);
 
 			float funcc = Mathf.Pow (moleculeMass / (2 * Mathf.PI * (1.38065f * Mathf.Pow (10, -23)) * GameController.globalTemperature), (3.0f / 2.0f));
 			float func22 = 4 * Mathf.PI * this.velocity * Mathf.Pow (2.71828f, -(moleculeMass * Mathf.Pow (this.velocity, 2)) / (2 * Mathf.PI * (1.38065f * Mathf.Pow (10, -23)) * GameController.globalTemperature));
 			float finall = funcc * func22;
-			Debug.Log ("This Object Function = " + finall);
+			//Debug.Log ("This Object Function = " + finall);
 		}
 	}
 }
