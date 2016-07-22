@@ -56,6 +56,18 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	void changeColor (GameObject obj)
+	{
+		GameObject whateverGameObject = obj;
+		Color whateverColor = new Color (255,255,255, 1);
+
+		MeshRenderer gameObjectRenderer = whateverGameObject.GetComponent<MeshRenderer> ();
+
+		Material newMaterial = new Material (Shader.Find ("Yellow"));
+
+		newMaterial.color = whateverColor;
+		gameObjectRenderer.material = newMaterial;
+	}
 	void checkFocus ()
 	{
 		foreach (GameObject a in allMolecule) {
@@ -63,6 +75,7 @@ public class GameController : MonoBehaviour {
 			if (temp.clickOn) {
 				if (temp.objName == name) {
 					index = allMolecule.IndexOf (a);
+					changeColor (a);
 				} else if (temp.objName != name) {
 					allMolecule[index].GetComponent<MoleculeController>().clickOn = false;
 					focus = temp;

@@ -312,7 +312,7 @@ public class MoleculeController : MonoBehaviour
 		this.numberOfMolecule = 40;
 		rb = GetComponent<Rigidbody> ();
 		randomPosition (); // Random position of Molecule
-		velocity = 5.0f;
+		velocity = 1.0f;
 
 
 		this.forceFromObj = new Vector3 [this.numberOfMolecule+1];
