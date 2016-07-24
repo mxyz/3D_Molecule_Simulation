@@ -10,11 +10,12 @@ public class GameController : MonoBehaviour {
 	private string name;
 	private int index;
 	private MoleculeController focus;
+	private int count;
 	// Use this for initialization
 	void Start () {
 		allMolecule = new List<GameObject> ();
 		InitList ();
-		
+		count = 0;
 		this.name = "";
 	}
 
@@ -45,9 +46,13 @@ public class GameController : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate ()
 	{
+		if(count == 1){
+			InitList();
+		}
 		TemperatureCalculate ();
 		checkFocus ();
 		//Debug.Log ("Tempurature =" + globalTemperature);
+		
 		if (focus != null) {
 			forceText.text = "Force : " + (focus.objForce.magnitude*5f).ToString("F10");
 			objNameText.text = "Name : " + focus.objName;
@@ -55,25 +60,22 @@ public class GameController : MonoBehaviour {
 			speedText.text = "Velocity : " + s + " m/s";
 
 		}
+		count++;
 	}
-
-	// void changeColor (GameObject obj)
-	// {
-	// 	obj.GetComponent<Renderer> ().material.color = Color.green;
-	// }
 	void checkFocus ()
 	{
 		foreach (GameObject a in allMolecule) {
 			MoleculeController temp = a.GetComponent<MoleculeController> ();
+			
 			if (temp.clickOn) {
 				if (temp.objName == name) {
 					index = allMolecule.IndexOf (a);
-					//changeColor (a);
-				}if (temp.objName != name) {
-					//allMolecule[index].GetComponent<MoleculeController>().changeClickOn();
-					if(focus!=null)
-					focus.changeClickOn();
-					name = temp.name;
+				}
+				if (temp.objName != name) {
+					if(focus!=null){
+						focus.changeClickOn();
+					}
+					name = temp.objName;
 					focus = temp;
 
 				}

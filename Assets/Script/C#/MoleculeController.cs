@@ -222,7 +222,7 @@ public class MoleculeController : MonoBehaviour
 	
 	void OnMouseDown ()
 	{
-		this.clickOn = true;
+		Debug.Log(this.objName);
 	}
 
 	int trueCount ()
@@ -318,6 +318,7 @@ public class MoleculeController : MonoBehaviour
 		this.relation = new List<GameObject>();
 		this.moleculeName = "Argon";
 		this.moleculeMass = 6.6f * Mathf.Pow (10, -26);
+		this.clickOn = false;
 	}
 	void checkOnClick(){
 		if(clickOn){
