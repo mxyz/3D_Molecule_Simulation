@@ -6,7 +6,7 @@ public class GameController : MonoBehaviour {
 
 	private List<GameObject> allMolecule;
 	public static float globalTemperature;
-	public Text countText, objNameText, speedText, vectorText, positionText;
+	public Text objNameText, speedText, vectorText, positionText, forceText;
 	private string name;
 	private int index;
 	private MoleculeController focus;
@@ -14,7 +14,7 @@ public class GameController : MonoBehaviour {
 	void Start () {
 		allMolecule = new List<GameObject> ();
 		InitList ();
-		countText.text = "Count : " + allMolecule.Count;
+		
 		this.name = "";
 	}
 
@@ -49,25 +49,18 @@ public class GameController : MonoBehaviour {
 		checkFocus ();
 		//Debug.Log ("Tempurature =" + globalTemperature);
 		if (focus != null) {
-			countText.text = "Count : " + allMolecule.Count + " Molecules";
+			forceText.text = "Force : " + (focus.objForce.magnitude*5f).ToString("F10");
 			objNameText.text = "Name : " + focus.objName;
-			speedText.text = "Velocity : " + focus.moleculeSpeed + " m/s";
+			float s = focus.moleculeSpeed*5.0f;
+			speedText.text = "Velocity : " + s + " m/s";
 
 		}
 	}
 
-	void changeColor (GameObject obj)
-	{
-		GameObject whateverGameObject = obj;
-		Color whateverColor = new Color (255,255,255, 1);
-
-		MeshRenderer gameObjectRenderer = whateverGameObject.GetComponent<MeshRenderer> ();
-
-		Material newMaterial = new Material (Shader.Find ("Yellow"));
-
-		newMaterial.color = whateverColor;
-		gameObjectRenderer.material = newMaterial;
-	}
+	// void changeColor (GameObject obj)
+	// {
+	// 	obj.GetComponent<Renderer> ().material.color = Color.green;
+	// }
 	void checkFocus ()
 	{
 		foreach (GameObject a in allMolecule) {
@@ -75,9 +68,12 @@ public class GameController : MonoBehaviour {
 			if (temp.clickOn) {
 				if (temp.objName == name) {
 					index = allMolecule.IndexOf (a);
-					changeColor (a);
-				} else if (temp.objName != name) {
-					allMolecule[index].GetComponent<MoleculeController>().clickOn = false;
+					//changeColor (a);
+				}if (temp.objName != name) {
+					//allMolecule[index].GetComponent<MoleculeController>().changeClickOn();
+					if(focus!=null)
+					focus.changeClickOn();
+					name = temp.name;
 					focus = temp;
 
 				}

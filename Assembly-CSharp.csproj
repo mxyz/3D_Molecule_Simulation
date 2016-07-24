@@ -45,6 +45,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Script\C#\CreateController.cs" />
      <Compile Include="Assets\Script\C#\FlyingCamera.cs" />
      <Compile Include="Assets\Script\C#\GameController.cs" />
      <Compile Include="Assets\Script\C#\MoleculeController.cs" />
