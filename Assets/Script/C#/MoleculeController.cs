@@ -309,7 +309,7 @@ public class MoleculeController : MonoBehaviour
 	void Start ()
 	{
 		this.objName = this.gameObject.name;
-		this.numberOfMolecule = 40;
+		this.numberOfMolecule = 60;
 		rb = GetComponent<Rigidbody> ();
 		randomPosition (); // Random position of Molecule
 		velocity = 1.0f;
