@@ -17,6 +17,7 @@ public class GameController : MonoBehaviour {
 		InitList ();
 		count = 0;
 		this.name = "";
+
 	}
 
 	void InitList ()

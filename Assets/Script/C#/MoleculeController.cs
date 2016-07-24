@@ -222,7 +222,7 @@ public class MoleculeController : MonoBehaviour
 	
 	void OnMouseDown ()
 	{
-		Debug.Log(this.objName);
+		clickOn = true;
 	}
 
 	int trueCount ()
