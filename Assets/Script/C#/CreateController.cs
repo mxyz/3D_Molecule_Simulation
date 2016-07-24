@@ -4,8 +4,8 @@ using System.Collections;
 public class CreateController : MonoBehaviour {
 
 	// Use this for initialization
-	void Start () {
-		for(int i = 1 ; i <= 40 ; i++){
+	public static void Create (int amount) {
+		for(int i = 1 ; i <= 30 ; i++){
 			 GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
 			 sphere.name = "Argon "+i;
 			 sphere.AddComponent<Rigidbody>();
@@ -15,5 +15,4 @@ public class CreateController : MonoBehaviour {
 		}
 	}
 	
-	// Update is called once per frame
 }

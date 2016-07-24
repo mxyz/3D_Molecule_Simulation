@@ -22,6 +22,7 @@ public class MoleculeController : MonoBehaviour
 	public float moleculeMass;
 	public float moleculeSpeed;
 	public bool clickOn;
+    private PassValue passValue;
 
 	// Attributes for Lannard Jones potential
 	private float maxDistance; // Maximun distance
@@ -126,6 +127,7 @@ public class MoleculeController : MonoBehaviour
 
 	void vdwEquation ()
 	{
+
 		for (int i = 1; i <= this.numberOfMolecule; i++) {
 			string name = "Argon " + i;
 			if (name == this.objName) {
@@ -284,8 +286,10 @@ public class MoleculeController : MonoBehaviour
 	/* Initialize molecule */
 	void Start ()
 	{
-		this.objName = this.gameObject.name;
-		this.numberOfMolecule = 40;
+
+        passValue = GameObject.FindWithTag("Pass").GetComponent<PassValue>();
+        this.objName = this.gameObject.name;
+		this.numberOfMolecule = passValue.nom;
 		rb = GetComponent<Rigidbody> ();
 		randomPosition (); // Random position of Molecule
 		realV = 5.0f;
@@ -319,7 +323,7 @@ public class MoleculeController : MonoBehaviour
 		this.moleculeName = "Argon";
 		this.moleculeMass = 6.6f * Mathf.Pow (10, -26);
 		this.clickOn = false;
-	}
+    }
 	void checkOnClick(){
 		if(clickOn){
 			this.GetComponent<Renderer>().material.color = Color.red;

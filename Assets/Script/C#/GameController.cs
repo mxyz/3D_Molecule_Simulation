@@ -11,14 +11,18 @@ public class GameController : MonoBehaviour {
 	private int index;
 	private MoleculeController focus;
 	private int count;
+	private PassValue passValue;
 	// Use this for initialization
 	void Start () {
 		allMolecule = new List<GameObject> ();
 		InitList ();
 		count = 0;
 		this.name = "";
+        passValue = GameObject.FindWithTag("Pass").GetComponent<PassValue>();
+        
+        CreateController.Create(passValue.nom);
 
-	}
+    }
 
 	void InitList ()
 	{
@@ -47,7 +51,7 @@ public class GameController : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate ()
 	{
-		if(count == 1){
+		if(count > 5){
 			InitList();
 		}
 		TemperatureCalculate ();
@@ -82,5 +86,8 @@ public class GameController : MonoBehaviour {
 				}
 			}
 		}
+	}
+	void awake(){
+
 	}
 }
