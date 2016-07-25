@@ -59,7 +59,7 @@ public class GameController : MonoBehaviour {
 		//Debug.Log ("Tempurature =" + globalTemperature);
 		
 		if (focus != null) {
-			forceText.text = "Force : " + (focus.objForce.magnitude*5f).ToString("F10");
+			forceText.text = "Force : " + (focus.objForce.magnitude*5f).ToString("F10") + " N";
 			objNameText.text = "Name : " + focus.objName;
 			float s = focus.moleculeSpeed*5.0f;
 			speedText.text = "Velocity : " + s + " m/s";

@@ -313,7 +313,7 @@ public class MoleculeController : MonoBehaviour
 		//end of random direction of vector3
 		// Set speed of each direction
 		setSpeed ();
-		SetMaxVelocity (100);
+		SetMaxVelocity (20);
 		movement = new Vector3 (speed [0], speed [1], speed [2]);
 		rb.velocity = movement;
 		this.maxDistance = passValue.md/5f;
