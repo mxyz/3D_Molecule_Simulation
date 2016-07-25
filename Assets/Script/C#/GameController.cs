@@ -51,11 +51,11 @@ public class GameController : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate ()
 	{
-		if(count > 5){
+		if(count == 5){
 			InitList();
 		}
 		//TemperatureCalculate ();
-		checkFocus ();
+		//checkFocus ();
 		//Debug.Log ("Tempurature =" + globalTemperature);
 		
 		if (focus != null) {
@@ -67,25 +67,18 @@ public class GameController : MonoBehaviour {
 		}
 		count++;
 	}
-	void checkFocus ()
+	public void changeFocus (MoleculeController molecule)
 	{
-		foreach (GameObject a in allMolecule) {
-			MoleculeController temp = a.GetComponent<MoleculeController> ();
-			
-			if (temp.clickOn) {
-				if (temp.objName == name) {
-					index = allMolecule.IndexOf (a);
-				}
-				if (temp.objName != name) {
-					if(focus!=null){
-						focus.changeClickOn();
-					}
-					name = temp.objName;
-					focus = temp;
-
-				}
-			}
+		if (focus == null) {
+			focus = molecule;
+		} else {
+			focus.changeClickOn ();
+			focus = molecule;
 		}
+	}
+	public static GameController getInstance ()
+	{
+		return GameObject.Find ("MainController").GetComponent<GameController> ();
 	}
 
 }

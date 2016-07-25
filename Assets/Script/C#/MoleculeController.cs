@@ -225,6 +225,7 @@ public class MoleculeController : MonoBehaviour
 	void OnMouseDown ()
 	{
 		clickOn = true;
+		GameController.getInstance().changeFocus (this);
 	}
 
 	int trueCount ()
@@ -315,9 +316,9 @@ public class MoleculeController : MonoBehaviour
 		SetMaxVelocity (100);
 		movement = new Vector3 (speed [0], speed [1], speed [2]);
 		rb.velocity = movement;
-		this.maxDistance = 10.0f;
-		this.epsilon = 1.0f;
-		this.sigma = 1.0f;
+		this.maxDistance = passValue.md/5f;
+		this.epsilon = passValue.epsilon/5f;
+		this.sigma = passValue.sigma/5f;
 		this.objForce = new Vector3 ();
 		this.relation = new List<GameObject>();
 		this.moleculeName = "Argon";
