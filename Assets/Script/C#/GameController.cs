@@ -32,20 +32,20 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	float TemperatureCalculate ()
-	{
-		float sum = 0;
-		foreach (GameObject a in allMolecule) {
-			float v = a.GetComponent<MoleculeController> ().moleculeSpeed;
-			float m = a.GetComponent<MoleculeController> ().moleculeMass;
+	//float TemperatureCalculate ()
+	//{
+	//	float sum = 0;
+	//	foreach (GameObject a in allMolecule) {
+	//		float v = a.GetComponent<MoleculeController> ().moleculeSpeed;
+	//		float m = a.GetComponent<MoleculeController> ().moleculeMass;
 
-			sum += (m * Mathf.Pow (v, 2))/2;
-		}
-		int n = allMolecule.Count;
-		int n2 = 3 * n - 1;
-		globalTemperature = (2 / ((1.38065f * Mathf.Pow (10, -23)) * n2)) * sum;
-		return globalTemperature;
-	}
+	//		sum += (m * Mathf.Pow (v, 2))/2;
+	//	}
+	//	int n = allMolecule.Count;
+	//	int n2 = 3 * n - 1;
+	//	globalTemperature = (2 / ((1.38065f * Mathf.Pow (10, -23)) * n2)) * sum;
+	//	return globalTemperature;
+	//}
 
 
 	// Update is called once per frame
@@ -54,7 +54,7 @@ public class GameController : MonoBehaviour {
 		if(count > 5){
 			InitList();
 		}
-		TemperatureCalculate ();
+		//TemperatureCalculate ();
 		checkFocus ();
 		//Debug.Log ("Tempurature =" + globalTemperature);
 		
@@ -87,7 +87,5 @@ public class GameController : MonoBehaviour {
 			}
 		}
 	}
-	void awake(){
 
-	}
 }
