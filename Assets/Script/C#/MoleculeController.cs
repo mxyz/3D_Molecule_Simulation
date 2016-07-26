@@ -293,7 +293,7 @@ public class MoleculeController : MonoBehaviour
 		this.numberOfMolecule = passValue.nom;
 		rb = GetComponent<Rigidbody> ();
 		randomPosition (); // Random position of Molecule
-		realV = 5.0f;
+		realV = Random.Range(0.1f, 15f);
 		velocity = realV/5.0f;
 
 
@@ -347,25 +347,6 @@ public class MoleculeController : MonoBehaviour
 		}
 		moleculeSpeed = this.rb.velocity.magnitude;
 		checkOnClick();
-		// if (this.objName == "Argon 1") {
-		// 	float peak = 0;
-		// 	int number = 0;
-		// 	for (int i = 1; i <= 20; i++) {
-		// 		float func = Mathf.Pow (moleculeMass / (2 * Mathf.PI * (1.38065f * Mathf.Pow (10, -23)) * GameController.globalTemperature), (3.0f / 2.0f));
-		// 		float func2 = 4 * Mathf.PI * i * Mathf.Pow (2.71828f, -(moleculeMass * Mathf.Pow (i, 2)) / (2 * Mathf.PI * (1.38065f * Mathf.Pow (10, -23)) * GameController.globalTemperature));
-		// 		float final = func * func2;
-		// 		if (final > peak) {
-		// 			peak = final;
-		// 			number = i;
-		// 		}
-		// 	}
-		// 	//Debug.Log ("Final From " + number +" = " + peak);
-
-		// 	float funcc = Mathf.Pow (moleculeMass / (2 * Mathf.PI * (1.38065f * Mathf.Pow (10, -23)) * GameController.globalTemperature), (3.0f / 2.0f));
-		// 	float func22 = 4 * Mathf.PI * this.velocity * Mathf.Pow (2.71828f, -(moleculeMass * Mathf.Pow (this.velocity, 2)) / (2 * Mathf.PI * (1.38065f * Mathf.Pow (10, -23)) * GameController.globalTemperature));
-		// 	float finall = funcc * func22;
-		// 	//Debug.Log ("This Object Function = " + finall);
-		// }
 	}
 }
 
